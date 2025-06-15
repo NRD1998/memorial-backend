@@ -248,28 +248,32 @@ async function generateMemorialPage(doc, item, pageNumber, totalPages, pageWidth
      .stroke();
 
   // Cargar y mostrar imagen
-  if (item.file) {
-    try {
-      const imagePath = path.join(__dirname, '..', 'public', item.file);
-      
-      if (fs.existsSync(imagePath)) {
-        doc.image(imagePath, imageX, imageY, {
-          width: imageAreaWidth,
-          height: imageAreaHeight,
-          fit: [imageAreaWidth, imageAreaHeight],
-          align: 'center',
-          valign: 'center'
-        });
-      } else {
-        drawElegantImagePlaceholder(doc, imageX, imageY, imageAreaWidth, imageAreaHeight);
-      }
-    } catch (error) {
-      console.log(`Error cargando imagen: ${error.message}`);
+if (item.file) {
+  try {
+    // Limpiar la barra inicial si existe
+    const cleanFile = item.file.startsWith('/') ? item.file.substring(1) : item.file;
+    const imagePath = path.join(__dirname, '..', 'public', cleanFile);
+    
+    console.log('Intentando cargar imagen desde:', imagePath);
+    
+    if (fs.existsSync(imagePath)) {
+      doc.image(imagePath, imageX, imageY, {
+        width: imageAreaWidth,
+        height: imageAreaHeight,
+        fit: [imageAreaWidth, imageAreaHeight],
+        align: 'center',
+        valign: 'center'
+      });
+    } else {
+      console.log('Imagen no encontrada:', imagePath);
       drawElegantImagePlaceholder(doc, imageX, imageY, imageAreaWidth, imageAreaHeight);
     }
-  } else {
+  } catch (error) {
+    console.log(`Error cargando imagen: ${error.message}`);
     drawElegantImagePlaceholder(doc, imageX, imageY, imageAreaWidth, imageAreaHeight);
   }
+}
+
 
   // Área de texto
   doc.fillColor('#f7fafc')
