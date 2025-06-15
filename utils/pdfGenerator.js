@@ -250,7 +250,7 @@ async function generateMemorialPage(doc, item, pageNumber, totalPages, pageWidth
   // Cargar y mostrar imagen
   if (item.file) {
     try {
-      const imagePath = path.join('..', 'public', item.file);
+      const imagePath = path.join('../public', item.file);
       
       if (fs.existsSync(imagePath)) {
         doc.image(imagePath, imageX, imageY, {
